@@ -20,9 +20,14 @@ def preprocessing(data):
     return preprocessed_data
 
 def feature_matrix(data):
-    matrix = CountVectorizer(max_features=1000)
+    matrix = CountVectorizer()
+    matrix_fit = matrix.fit_transform(data)
+    features = matrix.get_feature_names()
+    
+    print(f"Feature names: {features}")
+    print(f"Feature length: {len(features)}")
 
-    return matrix.fit_transform(data).toarray()
+    return matrix_fit.toarray()
 
 def main():
     with open("workdir/clinc150_uci/data_full.json") as file:
