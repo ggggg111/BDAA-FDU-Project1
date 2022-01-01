@@ -3,7 +3,6 @@ import string
 import json
 
 from nltk.tokenize import word_tokenize
-
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
 
