@@ -39,7 +39,6 @@ def main():
     test_X_data, test_y = map( list, zip(*data["test"]) )
 
     train_X_n = np.shape(train_X_data)[0]
-    test_X_n = np.shape(test_X_data)[0]
 
     data = np.concatenate( (train_X_data, test_X_data), axis=0 )
     data_preprocessed = preprocessing(data)
