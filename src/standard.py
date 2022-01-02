@@ -1,6 +1,7 @@
 import numpy as np
 import string
 import json
+import time
 
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
@@ -46,7 +47,11 @@ def main():
     test_X = data_matrix[train_X_n:]
     train_X = np.delete(data_matrix, np.s_[train_X_n:], 0)
 
+    start = time.time()
     svc = SVC(kernel="linear", C=100).fit(train_X, train_y)
+    total = time.time() - start
+    print(f"Training time: {total}")
+
     predictions = svc.predict(test_X)
     accuracy = Metrics.accuracy(predictions, test_y)
     print(f"Accuracy: {accuracy}")

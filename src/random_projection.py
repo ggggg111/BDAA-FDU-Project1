@@ -56,7 +56,11 @@ def main():
     test_X = rp_matrix[train_X_n:]
     train_X = np.delete(rp_matrix, np.s_[train_X_n:], 0)
 
+    start = time.time()
     svc = SVC(kernel="linear", C=100).fit(train_X, train_y)
+    total = time.time() - start
+    print(f"Training time: {total}")
+
     predictions = svc.predict(test_X)
     accuracy = Metrics.accuracy(predictions, test_y)
     print(f"Accuracy: {accuracy}")
