@@ -5,6 +5,7 @@ import time
 
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.utils import shuffle
 from sklearn.svm import SVC
 
 class Metrics:
@@ -45,6 +46,9 @@ def main():
 
     train_X_data, train_y = map( list, zip(*data["train"]) )
     test_X_data, test_y = map( list, zip(*data["test"]) )
+
+    train_X_data, train_y = shuffle(train_X_data, train_y)
+    test_X_data, test_y = shuffle(test_X_data, test_y)
 
     train_X_n = np.shape(train_X_data)[0]
 
