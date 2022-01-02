@@ -39,14 +39,13 @@ def preprocessing(data):
     for element in data:
         element = element.lower()
         element = "".join([char for char in element if char not in string.punctuation])
-        tokenized_element = word_tokenize(element)
 
-        preprocessed_data.append( " ".join(tokenized_element) )
+        preprocessed_data.append(element)
 
     return preprocessed_data
 
 def feature_matrix(data):
-    """Create the feature matrix, also known as dictionary in the NLP context.
+    """Create the feature matrix, also known as dictionary in the NLP context. Each feature is an individual token.
 
     Args:
         data (list): All the preprocessed features of the dataset.
