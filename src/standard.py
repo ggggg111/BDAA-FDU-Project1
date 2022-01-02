@@ -4,6 +4,7 @@ import json
 import time
 
 from nltk.tokenize import word_tokenize
+from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.utils import shuffle
 from sklearn.svm import SVC
@@ -35,20 +36,30 @@ def main():
     with open("workdir/clinc150_uci/data_full.json") as file:
         data = json.load(file)
 
-    train_X_data, train_y = map( list, zip(*data["train"]) )
-    test_X_data, test_y = map( list, zip(*data["test"]) )
+    train_X_data, train_y_data = map( list, zip(*data["train"]) )
+    test_X_data, test_y_data = map( list, zip(*data["test"]) )
 
-    train_X_data, train_y = shuffle(train_X_data, train_y)
-    test_X_data, test_y = shuffle(test_X_data, test_y)
+    train_X_data, train_y_data = shuffle(train_X_data, train_y_data)
+    test_X_data, test_y_data = shuffle(test_X_data, test_y_data)
 
     train_X_n = np.shape(train_X_data)[0]
+    train_y_n = np.shape(train_y_data)[0]
 
-    data = np.concatenate( (train_X_data, test_X_data), axis=0 )
-    data_preprocessed = preprocessing(data)
+    data_X = np.concatenate( (train_X_data, test_X_data), axis=0 )
+    data_preprocessed = preprocessing(data_X)
     data_matrix = feature_matrix(data_preprocessed)
 
     test_X = data_matrix[train_X_n:]
     train_X = np.delete(data_matrix, np.s_[train_X_n:], 0)
+
+    data_y = np.concatenate( (train_y_data, test_y_data) )
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit(data_y)
+    data_y_encoded = label_encoder.transform(data_y)
+
+    test_y = data_y_encoded[train_y_n:]
+    train_y = np.delete(data_y_encoded, np.s_[train_y_n:], 0)
 
     start = time.time()
     svc = SVC(kernel="linear", C=100).fit(train_X, train_y)
