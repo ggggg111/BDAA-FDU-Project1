@@ -3,7 +3,6 @@ import string
 import json
 import time
 
-from nltk.tokenize import word_tokenize
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.utils import shuffle
