@@ -28,9 +28,8 @@ def preprocessing(data):
 
 def feature_matrix(data):
     matrix = CountVectorizer()
-    matrix_fit = matrix.fit_transform(data)
 
-    return matrix_fit.toarray()
+    return matrix.fit_transform(data).toarray()
 
 def main():
     with open("workdir/clinc150_uci/data_full.json") as file:

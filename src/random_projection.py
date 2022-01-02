@@ -28,9 +28,8 @@ def preprocessing(data):
 
 def feature_matrix(data):
     matrix = CountVectorizer()
-    matrix_fit = matrix.fit_transform(data)
 
-    return matrix_fit.toarray()
+    return matrix.fit_transform(data).toarray()
 
 def random_projection(X, epsilon=0.1):
     n, m = np.shape(X)[0], np.shape(X)[1]
