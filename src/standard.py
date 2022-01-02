@@ -12,10 +12,28 @@ from sklearn.svm import SVC
 class Metrics:
     @staticmethod
     def accuracy(predictions, ground_truth):
+        """Calculate the mean value given the prediction and ground-truth values.
+
+        Args:
+            predictions (numpy.ndarray): [description]
+            ground_truth (numpy.ndarray): [description]
+
+        Returns:
+            numpy.float64: [description]
+        """
         assert len(predictions) == len(ground_truth), "The length of the predictions and the ground truth must be the same"
+
         return np.mean(predictions == ground_truth)
 
 def preprocessing(data):
+    """Data preprocessing. Each element is converted into lowercase, punctuation characters are removed, and tokenized for further preprocessing if desired.
+
+    Args:
+        data (numpy.ndarray): All the standard dataset features.
+
+    Returns:
+        list: Each preprocessed feature element of the dataset.
+    """
     preprocessed_data = []
 
     for element in data:
@@ -28,6 +46,14 @@ def preprocessing(data):
     return preprocessed_data
 
 def feature_matrix(data):
+    """Create the feature matrix, also known as dictionary in the NLP context.
+
+    Args:
+        data (list): All the preprocessed features of the dataset.
+
+    Returns:
+        numpy.ndarray: Word dictionary.
+    """
     matrix = CountVectorizer()
 
     return matrix.fit_transform(data).toarray()
