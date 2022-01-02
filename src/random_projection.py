@@ -59,7 +59,7 @@ def feature_matrix(data):
     return matrix.fit_transform(data).toarray()
 
 def random_projection(X, epsilon=0.1):
-    """Perform random projection for dimensionality reduction of the dataset.
+    """Perform a Gaussian Random Projection for dimensionality reduction of the dataset.
 
     Args:
         X (numpy.ndarray): The features of the dataset.
@@ -76,40 +76,53 @@ def random_projection(X, epsilon=0.1):
     return ( 1 / np.sqrt(p) ) * np.matmul(X, R)
 
 def main():
+    # Open dataset file
     with open("workdir/clinc150_uci/data_full.json") as file:
         data = json.load(file)
 
+    # Get both the training and testing data from the dataset
     train_X_data, train_y_data = map( list, zip(*data["train"]) )
     test_X_data, test_y_data = map( list, zip(*data["test"]) )
 
+    # The data is ordered, so it needs to be shuffled
     train_X_data, train_y_data = shuffle(train_X_data, train_y_data)
     test_X_data, test_y_data = shuffle(test_X_data, test_y_data)
 
-    train_X_n = np.shape(train_X_data)[0]
-    train_y_n = np.shape(train_y_data)[0]
+    # Get number of elements of the training data
+    train_n = np.shape(train_X_data)[0]
 
+    # Join training and testing feature data for feature preprocessing
     data_X = np.concatenate( (train_X_data, test_X_data), axis=0 )
+    # Perform data preprocessing in NLP context
     data_preprocessed = preprocessing(data_X)
+    # Obtain feature matrix, in order to have trainable and testable data
     data_matrix = feature_matrix(data_preprocessed)
+    # Dimensionality reduction using Gaussian Random Projection
     rp_matrix = random_projection(data_matrix, 0.1)
 
-    test_X = rp_matrix[train_X_n:]
-    train_X = np.delete(rp_matrix, np.s_[train_X_n:], 0)
+    # Assign both testing and training feature data using the past number of training instances
+    test_X = rp_matrix[train_n:]
+    train_X = np.delete(rp_matrix, np.s_[train_n:], 0)
 
+    # Join both training and testing label data
     data_y = np.concatenate( (train_y_data, test_y_data) )
 
+    # Encode the labels, so that they are an integer instead of a string
     label_encoder = LabelEncoder()
     label_encoder.fit(data_y)
     data_y_encoded = label_encoder.transform(data_y)
 
-    test_y = data_y_encoded[train_y_n:]
-    train_y = np.delete(data_y_encoded, np.s_[train_y_n:], 0)
+    # Assign both testing and training label data using the past number of training instances
+    test_y = data_y_encoded[train_n:]
+    train_y = np.delete(data_y_encoded, np.s_[train_n:], 0)
 
+    # Train a SVM model for classification
     start = time.time()
     svc = SVC(kernel="linear", C=100).fit(train_X, train_y)
     total = time.time() - start
     print(f"Training time: {total}")
 
+    # Perform the predictions using the desired model
     predictions = svc.predict(test_X)
     accuracy = Metrics.accuracy(predictions, test_y)
     print(f"Accuracy: {accuracy}")
