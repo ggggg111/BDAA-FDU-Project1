@@ -11,14 +11,14 @@ from sklearn.svm import SVC
 class Metrics:
     @staticmethod
     def accuracy(predictions, ground_truth):
-        """Calculate the mean value given the prediction and ground-truth values.
+        """Calculate the mean value of the accuracy given the prediction and ground-truth values.
 
         Args:
-            predictions (numpy.ndarray): [description]
-            ground_truth (numpy.ndarray): [description]
+            predictions (numpy.ndarray): Prediction values vector.
+            ground_truth (numpy.ndarray): Ground-truth values vector.
 
         Returns:
-            numpy.float64: [description]
+            numpy.float64: Accuracy values mean.
         """
         assert len(predictions) == len(ground_truth), "The length of the predictions and the ground truth must be the same"
 
