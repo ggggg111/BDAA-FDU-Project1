@@ -25,7 +25,7 @@ class Metrics:
         return np.mean(predictions == ground_truth)
 
 def preprocessing(data):
-    """Data preprocessing. Each element is converted into lowercase, punctuation characters are removed, and tokenized for further preprocessing if desired.
+    """Data preprocessing. Each element is converted into lowercase and punctuation characters are removed.
 
     Args:
         data (numpy.ndarray): All the standard dataset features.
